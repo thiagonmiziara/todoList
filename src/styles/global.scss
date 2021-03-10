@@ -1,5 +1,5 @@
 :root {
-  --blue: #273FAD;
+  --blue: #8585ed;
   --green: #3FAD27;
   --red: 	#ad273f;
   --background: #EBEBEB;
@@ -28,8 +28,13 @@ input, textarea {
   max-width: 1120px;
   margin: 0 auto;
   padding: 2.5rem 1rem;
+  
 }
 
 button, .checkmark {
   cursor: pointer;
+}
+
+h1{
+  color: var(--shapes);
 }
