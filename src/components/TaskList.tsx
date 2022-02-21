@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "../styles/tasklist.scss";
 
@@ -25,6 +25,7 @@ export function TaskList() {
     };
 
     setTasks((oldState) => [...oldState, newTask]);
+    localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]));
     setNewTaskTitle("");
   }
 
@@ -44,29 +45,36 @@ export function TaskList() {
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
-
     const filteredTasks = tasks.filter((task) => task.id !== id);
     setTasks(filteredTasks);
+    localStorage.setItem("tasks", JSON.stringify(filteredTasks));
   }
 
+  useEffect(() => {
+    const localStorageTasks = localStorage.getItem("tasks");
+    if (localStorageTasks) {
+      setTasks(JSON.parse(localStorageTasks));
+    }
+  }, []);
+
   return (
-    <section className="task-list container">
+    <section className='task-list container'>
       <header>
         <h2>Minhas tasks</h2>
 
-        <div className="input-group">
+        <div className='input-group'>
           <input
-            type="text"
-            placeholder="Adicionar novo todo"
+            type='text'
+            placeholder='Adicionar novo todo'
             onChange={(e) => setNewTaskTitle(e.target.value)}
             value={newTaskTitle}
           />
           <button
-            type="submit"
-            data-testid="add-task-button"
+            type='submit'
+            data-testid='add-task-button'
             onClick={handleCreateNewTask}
           >
-            <FiCheckSquare size={16} color="#fff" />
+            <FiCheckSquare size={16} color='#fff' />
           </button>
         </div>
       </header>
@@ -77,23 +85,23 @@ export function TaskList() {
             <li key={task.id}>
               <div
                 className={task.isComplete ? "completed" : ""}
-                data-testid="task"
+                data-testid='task'
               >
-                <label className="checkbox-container">
+                <label className='checkbox-container'>
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     readOnly
                     checked={task.isComplete}
                     onClick={() => handleToggleTaskCompletion(task.id)}
                   />
-                  <span className="checkmark"></span>
+                  <span className='checkmark'></span>
                 </label>
                 <p>{task.title}</p>
               </div>
 
               <button
-                type="button"
-                data-testid="remove-task-button"
+                type='button'
+                data-testid='remove-task-button'
                 onClick={() => handleRemoveTask(task.id)}
               >
                 <FiTrash size={16} />
